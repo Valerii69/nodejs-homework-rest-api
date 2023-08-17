@@ -29,10 +29,7 @@ const removeContact = async (contactId) => {
 
 const addContact = async (bodi) => {
   const contacts = await listContacts();
-  const newContact = {
-    id: `${crypto.randomUUID()}`,
-    ...bodi,
-  };
+  const newContact = { id: `${crypto.randomUUID()}`, ...bodi };
   contacts.push(newContact);
   await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
   return newContact;
@@ -44,7 +41,7 @@ const updateContact = async (contactId, body) => {
   if (findContact === -1) {
     return null;
   }
-  contacts[findContact] = { contactId, ...body };
+  contacts[findContact] = { id: contactId, ...body };
   await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
   return contacts[findContact];
 };
