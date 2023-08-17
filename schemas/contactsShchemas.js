@@ -22,4 +22,7 @@ const updateContactSchema = Joi.object({
   phone: Joi.string().optional().required(),
 }).or("name", "email", "phone");
 
-module.exports = { addSchema, updateContactSchema };
+module.exports = {
+  addSchema,
+  updateContactSchema,
+};
