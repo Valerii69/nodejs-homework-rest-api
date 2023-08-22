@@ -1,7 +1,7 @@
 const HttpError = require("../helpers");
 
 const validateBody = (addSchema) => {
-  const func = (req, res, next) => {
+  const func = (req, _, next) => {
     const { error } = addSchema.validate(req.body);
     if (error) {
       throw HttpError(400, error.message);

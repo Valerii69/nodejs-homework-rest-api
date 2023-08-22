@@ -19,6 +19,7 @@ const addContact = async (req, res, _) => {
   const result = await contactsModels.addContact(req.body);
   res.status(201).json(result);
 };
+
 const removeContact = async (req, res, _) => {
   const { contactId } = req.params;
   const result = await contactsModels.removeContact(contactId);
