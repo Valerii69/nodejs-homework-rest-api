@@ -1,9 +1,9 @@
 const Joi = require("joi");
 
 const addSchema = Joi.object({
-  name: Joi.string().required(),
-  email: Joi.string().required(),
-  phone: Joi.string().required(),
+  name: Joi.string().min(2).alphanum().required(),
+  email: Joi.string().trim().email().required(),
+  phone: Joi.number().integer().required(),
 });
 
 // const errorMessages = "missing required";
@@ -14,17 +14,17 @@ const addSchema = Joi.object({
 //     .max(35)
 //     .required()
 //     .error(() => {
-//       return { message: `${errorMessages} "Name field" ` };
+//       return { message: `${errorMessages} "name field" ` };
 //     }),
 //   email: Joi.string()
 //     .required()
 //     .error(() => {
-//       return { message: `${errorMessages} "Email field"` };
+//       return { message: `${errorMessages} "email field"` };
 //     }),
 //   phone: Joi.string()
 //     .required()
 //     .error(() => {
-//       return { message: `${errorMessages} "Phone field"` };
+//       return { message: `${errorMessages} "phone field"` };
 //     }),
 //   favorite: Joi.boolean(),
 // }).or("name", "email", "phone");
