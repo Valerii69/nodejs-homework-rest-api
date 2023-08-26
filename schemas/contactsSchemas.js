@@ -1,41 +1,50 @@
 const Joi = require("joi");
 
 const addSchema = Joi.object({
-  name: Joi.string().min(2).alphanum().required(),
-  email: Joi.string().trim().email().required(),
-  phone: Joi.number().integer().required(),
-});
+  name: Joi.string()
+    .min(3)
+    .max(20)
+    .alphanum()
+    .required()
+    .messages({ "any.required": `missing required name field` }),
+  email: Joi.string()
+    .trim()
+    .email()
+    .required()
+    .messages({ "any.required": `missing required email field` }),
+  phone: Joi.number()
+    .required()
+    .messages({ "any.required": `missing required phone field` }),
+})
+  .or("name", "email", "phone")
+  .messages({ "object.missing": `missing fields` });
+// favorite: Joi.boolean()
+//   .required()
+//   .messages({ "object.unknown": `unknown field` }),
+// function validate(addSchema, object) {
+//   var result = addSchema.validate(object);
 
-// const errorMessages = "missing required";
+//   if (result.errors) {
+//     // You have everything Joi uses for messages at your disposal in result.errors.details
+//     return i18n.transform(result.errors);
+//   }
 
-// const addSchema = Joi.object({
-//   name: Joi.string()
-//     .min(3)
-//     .max(35)
-//     .required()
-//     .error(() => {
-//       return { message: `${errorMessages} "name field" ` };
-//     }),
-//   email: Joi.string()
-//     .required()
-//     .error(() => {
-//       return { message: `${errorMessages} "email field"` };
-//     }),
-//   phone: Joi.string()
-//     .required()
-//     .error(() => {
-//       return { message: `${errorMessages} "phone field"` };
-//     }),
-//   favorite: Joi.boolean(),
-// }).or("name", "email", "phone");
+//   return true;
+// }
 
-// const updateContactSchema = Joi.object(
-//   {
-//     name: Joi.string().optional().required(),
-//     email: Joi.string().optional().required(),
-//     phone: Joi.string().optional().required(),
-//   }.or("name", "email", "phone")
-// );
+// .messages({ "any.required": `missing fields` });
+
+// const updateContactSchema = Joi.object({
+//   name: Joi.string().optional().required(),
+//   email: Joi.string().optional().required(),
+//   phone: Joi.string().optional().required(),
+// });
+
+// external((obj) => {
+//   if (!obj.name || !obj.email || !obj.phone) {
+//     throw new Error("missing fields");
+//   }
+// });
 
 module.exports = {
   addSchema,

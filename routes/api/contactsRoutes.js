@@ -9,14 +9,10 @@ router.get("/", control.getContactAll);
 
 router.get("/:contactId", control.getContactById);
 
-router.post("/", validateBody(schemas.addSchema), control.addContact);
+router.post("/", validateBody(schemas.addSchema), control.postContact);
 
-router.delete("/:contactId", control.removeContact);
+router.delete("/:contactId", control.deletedContact);
 
-router.put(
-  "/:contactId",
-  validateBody(schemas.addSchema),
-  control.updateContact
-);
+router.put("/:contactId", validateBody(schemas.addSchema), control.putContact);
 
 module.exports = router;
