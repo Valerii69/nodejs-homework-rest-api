@@ -1,5 +1,5 @@
 // const service = require("../service"); // const ctrlWrapper = require("../helpers/controlWrapper");
-import Contact from "./schemas/сontact.schemas.js";
+const { Contact } = require("./schemas/contactSchema.js");
 
 const getAllContacts = async () => {
   return Contact.find();
@@ -9,8 +9,8 @@ const getContactById = (id) => {
   return Contact.findOne({ _id: id });
 };
 
-const createContact = ({ title, text }) => {
-  return Contact.create({ title, text });
+const createContact = ({ name, email, phone }) => {
+  return Contact.create({ name, email, phone });
 };
 
 const updateContact = (id, fields) => {

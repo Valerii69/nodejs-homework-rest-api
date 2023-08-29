@@ -1,25 +1,16 @@
-import {
-  getAllContacts,
-  getContactById,
-  createContact,
-  updateContact,
-  removeContact,
-} from "../service/contactsService.js";
-import Joi from "joi";
+// import { required } from "joi";
 
-const contactReqBodySchema = Joi.object({
-  name: Joi.string().min(3).max(30).required(),
-  email: Joi.string().email({ minDomainSegments: 2 }).required(),
-  phone: Joi.string().min(6).max(20).required(),
-});
-
-const favoriteReqBodySchema = Joi.object({
-  favorite: Joi.boolean().required(),
-});
+const service = require("../service/contactsService.js");
+// const Joi = required  ("joi");
+// import Joi from "joi";
+const {
+  contactReqBodySchema,
+  favoriteReqBodySchema,
+} = require("../service/schemas/contactSchema.js");
 
 const get = async (req, res, next) => {
   try {
-    const results = await getAllContacts();
+    const results = await service.getAllContacts();
     res.json({
       status: "success",
       code: 200,
@@ -27,16 +18,16 @@ const get = async (req, res, next) => {
         contacts: results,
       },
     });
-  } catch (e) {
-    console.error(e);
-    next(e);
+  } catch (err) {
+    console.error(err);
+    next(err);
   }
 };
 
 const getById = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const result = await getContactById(id);
+    const result = await service.getContactById(id);
     if (result) {
       res.json({
         status: "success",
@@ -51,9 +42,9 @@ const getById = async (req, res, next) => {
         data: "Not Found",
       });
     }
-  } catch (e) {
-    console.error(e);
-    next(e);
+  } catch (err) {
+    console.error(err);
+    next(err);
   }
 };
 
@@ -67,16 +58,16 @@ const create = async (req, res, next) => {
   }
 
   try {
-    const result = await createContact({ name, email, phone });
+    const result = await service.createContact({ name, email, phone });
 
     res.status(201).json({
       status: "success",
       code: 201,
       data: { createdContact: result },
     });
-  } catch (e) {
-    console.error(e);
-    next(e);
+  } catch (err) {
+    console.error(err);
+    next(err);
   }
 };
 
@@ -91,7 +82,7 @@ const update = async (req, res, next) => {
   }
 
   try {
-    const result = await updateContact(id, { name, email, phone });
+    const result = await service.updateContact(id, { name, email, phone });
     if (result) {
       res.json({
         status: "success",
@@ -106,9 +97,9 @@ const update = async (req, res, next) => {
         data: "Not Found",
       });
     }
-  } catch (e) {
-    console.error(e);
-    next(e);
+  } catch (err) {
+    console.error(err);
+    next(err);
   }
 };
 
@@ -123,7 +114,7 @@ const updateStatusContact = async (req, res, next) => {
   }
 
   try {
-    const result = await updateContact(id, { favorite });
+    const result = await service.updateContact(id, { favorite });
     if (result) {
       res.json({
         status: "success",
@@ -138,9 +129,9 @@ const updateStatusContact = async (req, res, next) => {
         data: "Not Found",
       });
     }
-  } catch (e) {
-    console.error(e);
-    next(e);
+  } catch (err) {
+    console.error(err);
+    next(err);
   }
 };
 
@@ -148,7 +139,7 @@ const remove = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const result = await removeContact(id);
+    const result = await service.removeContact(id);
     if (result) {
       res.json({
         status: "success",
@@ -163,10 +154,10 @@ const remove = async (req, res, next) => {
         data: "Not Found",
       });
     }
-  } catch (e) {
-    console.error(e);
-    next(e);
+  } catch (err) {
+    console.error(err);
+    next(err);
   }
 };
 
-export { get, getById, create, update, updateStatusContact, remove };
+module.exports = { get, getById, create, update, updateStatusContact, remove };
