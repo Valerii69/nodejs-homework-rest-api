@@ -102,7 +102,7 @@ const update = async (req, res, next) => {
       res.status(404).json({
         status: "error",
         code: 404,
-        message: `Not found contact id: ${id}`,
+        message: `Not found `,
         data: "Not Found",
       });
     }
@@ -134,7 +134,7 @@ const updateStatusContact = async (req, res, next) => {
       res.status(404).json({
         status: "error",
         code: 404,
-        message: `Not found contact id: ${id}`,
+        message: `Not found `,
         data: "Not Found",
       });
     }
@@ -159,7 +159,7 @@ const remove = async (req, res, next) => {
       res.status(404).json({
         status: "error",
         code: 404,
-        message: `Not found contact id: ${id}`,
+        message: `Not found `,
         data: "Not Found",
       });
     }
