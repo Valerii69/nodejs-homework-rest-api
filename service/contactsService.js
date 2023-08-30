@@ -1,5 +1,5 @@
 // const service = require("../service"); // const ctrlWrapper = require("../helpers/controlWrapper");
-const { Contact } = require("./schemas/contactSchema.js");
+const Contact = require("./schemas/contactSchema.js");
 
 const getAllContacts = async () => {
   return Contact.find();

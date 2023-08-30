@@ -1,6 +1,4 @@
-// import { number } from "joi";
 const mongoose = require("mongoose");
-// const Joi = require("joi");
 const Schema = mongoose.Schema;
 
 const contact = new Schema(
@@ -14,13 +12,13 @@ const contact = new Schema(
     email: {
       type: String,
       unique: true,
-      required: true,
+      // required: true,
     },
     phone: {
-      type: Number,
+      type: String,
       unique: true,
-      min: 5,
-      max: 15,
+      // min: 5,
+      // max: 15,
     },
     favorite: {
       type: Boolean,
@@ -32,4 +30,4 @@ const contact = new Schema(
 
 const Contact = mongoose.model("contact", contact);
 
-module.exports = { Contact };
+module.exports = Contact;

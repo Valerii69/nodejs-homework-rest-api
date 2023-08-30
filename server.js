@@ -1,23 +1,20 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-
-require("dotenv").config();
-
 const router = require("./api/index.js");
 
 const app = express();
-// const router = require("./api/index");
 
 app.use(express.json());
 app.use(cors());
 app.use("/api", router);
 
-app.use((__, res) => {
+app.use((__, res, _) => {
   res.status(404).json({
     status: "error",
     code: 404,
-    message: "Use api on routes: /api/tasks",
+    message: "Use api on routes: /api/contacts",
     data: "Not found",
   });
 });
@@ -50,5 +47,5 @@ connection
   })
   .catch((error) => {
     console.log(`Server not running. Error message: ${error.message}`);
-    process.exit(1);
+    // process.exit(1);
   });
