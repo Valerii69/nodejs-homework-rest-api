@@ -47,5 +47,5 @@ connection
   })
   .catch((error) => {
     console.log(`Server not running. Error message: ${error.message}`);
-    // process.exit(1);
+    process.exit(1);
   });
