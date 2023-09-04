@@ -5,7 +5,7 @@ const { HttpError } = require("../../helpers");
 
 const registerUser = async (req, res) => {
   const { email, password } = req.body;
-  const hash = await bcrypt.hash(password, 10);
+  const createHashPassword = await bcrypt.hash(password, 10);
 
   const user = await User.findOne({ email });
 
@@ -13,7 +13,10 @@ const registerUser = async (req, res) => {
     throw HttpError(409, "Email in use");
   }
 
-  const result = await User.create({ ...req.body, password: hash });
+  const result = await User.create({
+    ...req.body,
+    password: createHashPassword,
+  });
   res.status(201).json({
     user: {
       email,
