@@ -4,21 +4,29 @@ const ctrl = require("../../controllers/users");
 const { schemas } = require("../../models/user");
 
 const router = express.Router();
+const jsonParser = express.json();
 
 router.post(
   "/register",
+  jsonParser,
   validateBody(schemas.registerSchema),
   ctrl.registerUser
 );
 
-router.post("/login", validateBody(schemas.loginSchema), ctrl.loginUser);
+router.post(
+  "/login",
+  jsonParser,
+  validateBody(schemas.loginSchema),
+  ctrl.loginUser
+);
 
-router.post("/logout", authenticate, ctrl.logoutUser);
+router.post("/logout", jsonParser, authenticate, ctrl.logoutUser);
 
-router.get("/current", authenticate, ctrl.getCurrentUser);
+router.get("/current", jsonParser, authenticate, ctrl.getCurrentUser);
 
 router.patch(
   "/",
+  jsonParser,
   authenticate,
   validateBody(schemas.updateStatusSchema),
   ctrl.updateStatusUser
