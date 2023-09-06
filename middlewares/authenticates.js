@@ -4,25 +4,40 @@ const { User } = require("../models/user");
 
 const { HttpError } = require("../helpers");
 
-const { SECRET_KEY } = process.env;
+// const { JWT_SECRET } = process.env;
 
-const authenticate = async (req, res, next) => {
-  const { authorization = "" } = req.headers;
-  const [bearer, token] = authorization.split(" ");
+function auth(req, res, next) {
+  const authHeader = req.headers.authorization || "";
+
+  const [bearer, token] = authHeader.split(" ", 2);
+
   if (bearer !== "Bearer") {
-    next(HttpError(401));
+    return res.status(401).send({ message: "Not authorized" });
   }
-  try {
-    const { id } = jwt.verify(token, SECRET_KEY);
-    const user = await User.findById(id);
-    if (!user || !user.token || user.token !== token) {
+
+  jwt.verify(token, process.env.JWT_SECRET, async (err, decode) => {
+    if (err) {
+      if (err.name === "TokenExpiredError") {
+        return res.status(401).send({ message: "Token is expired" });
+      }
+
       next(HttpError(401));
     }
-    req.user = user;
-    next();
-  } catch {
-    next(HttpError(401));
-  }
-};
 
-module.exports = authenticate;
+    try {
+      const user = await User.findById(decode.id).exec();
+
+      if (user.token !== token) {
+        next(HttpError(401));
+      }
+
+      req.user = { id: decode.id, name: decode.name };
+
+      next();
+    } catch (err) {
+      next(HttpError(401));
+    }
+  });
+}
+
+module.exports = auth;

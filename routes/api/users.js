@@ -1,5 +1,5 @@
 const express = require("express");
-const { validateBody, authenticate } = require("../../middlewares");
+const { validateBody, auth } = require("../../middlewares");
 const ctrl = require("../../controllers/users");
 const { schemas } = require("../../models/user");
 
@@ -20,14 +20,14 @@ router.post(
   ctrl.loginUser
 );
 
-router.post("/logout", jsonParser, authenticate, ctrl.logoutUser);
+router.post("/logout", jsonParser, auth, ctrl.logoutUser);
 
-router.get("/current", jsonParser, authenticate, ctrl.getCurrentUser);
+router.get("/current", jsonParser, auth, ctrl.getCurrentUser);
 
 router.patch(
   "/",
   jsonParser,
-  authenticate,
+  auth,
   validateBody(schemas.updateStatusSchema),
   ctrl.updateStatusUser
 );

@@ -1,6 +1,8 @@
-const getCurrentUser = (req, res) => {
-  const { email, subscription } = req.user;
+// const { HttpError } = require("../../helpers");
 
+const getCurrentUser = (req, res) => {
+  const { email, subscription } = req.body;
+  // console.log(email, subscription);
   res.json({
     email,
     subscription,
