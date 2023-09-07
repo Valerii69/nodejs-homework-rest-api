@@ -10,12 +10,12 @@ const userSchema = new Schema(
     password: {
       type: String,
       minlength: 6,
-      required: [true, "Set password for user"],
+      required: [true],
     },
     email: {
       type: String,
       match: emailRegex,
-      required: [true, "Email is required"],
+      required: [true],
       unique: true,
     },
     subscription: {
