@@ -10,12 +10,12 @@ const userSchema = new Schema(
     password: {
       type: String,
       minlength: 6,
-      required: [true],
+      required: [true, "Set password for user"],
     },
     email: {
       type: String,
       match: emailRegex,
-      required: [true],
+      required: [true, "Email is required"],
       unique: true,
     },
     subscription: {
@@ -25,7 +25,7 @@ const userSchema = new Schema(
     },
     token: {
       type: String,
-      default: null,
+      // default: null,
     },
   },
   { versionKey: false, timestamps: true }
