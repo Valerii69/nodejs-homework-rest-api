@@ -3,6 +3,9 @@ const logger = require("morgan");
 const cors = require("cors");
 require("dotenv").config();
 
+// const multer = require("multer");
+// const upload = multer({ dest: "uploads/" });
+
 const contactsRouter = require("./routes/api/contacts");
 const usersRouter = require("./routes/api/users");
 
