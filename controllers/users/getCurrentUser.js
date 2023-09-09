@@ -1,4 +1,3 @@
-// const { HttpError } = require("../../helpers");
 const { User } = require("../../models/user");
 
 const getCurrentUser = async (req, res, next) => {
