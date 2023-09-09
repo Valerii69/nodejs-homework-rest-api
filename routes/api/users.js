@@ -1,9 +1,9 @@
 const express = require("express");
-const { validateBody, auth } = require("../../middlewares");
+const router = express.Router();
+const { validateBody, auth, upload } = require("../../middlewares");
 const ctrl = require("../../controllers/users");
 const { schemas } = require("../../models/user");
 
-const router = express.Router();
 const jsonParser = express.json();
 
 router.post(
@@ -31,5 +31,6 @@ router.patch(
   validateBody(schemas.updateStatusSchema),
   ctrl.updateStatusUser
 );
+router.patch("/avatars", auth, upload.single("avatar"), ctrl.uploadAvatar);
 
 module.exports = router;

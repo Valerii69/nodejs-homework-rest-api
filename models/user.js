@@ -25,11 +25,11 @@ const userSchema = new Schema(
     },
     token: {
       type: String,
-      default: null,
+      // default: null,
     },
     avatarURL: {
       type: String,
-      required: true,
+      required: null,
     },
   },
   { versionKey: false, timestamps: true }
