@@ -2,42 +2,27 @@ const jwt = require("jsonwebtoken");
 
 const { User } = require("../models/user");
 
-const { HttpError } = require("../helpers/index.js");
+const { HttpError } = require("../helpers");
 
-// const { JWT_SECRET } = process.env;
+const { JWT_SECRET } = process.env;
 
-function auth(req, res, next) {
-  const authHeader = req.headers.authorization || "";
-
-  const [bearer, token] = authHeader.split(" ", 2);
-
+const auth = async (req, res, next) => {
+  const { authorization = "" } = req.headers;
+  const [bearer, token] = authorization.split(" ");
   if (bearer !== "Bearer") {
-    return res.status(401).send({ message: "Not authorized" });
+    next(HttpError(401));
   }
-
-  jwt.verify(token, process.env.JWT_SECRET, async (err, decode) => {
-    if (err) {
-      if (err.name === "TokenExpiredError") {
-        return res.status(401).send({ message: "Token is expired" });
-      }
-
+  try {
+    const { id } = jwt.verify(token, JWT_SECRET);
+    const user = await User.findById(id);
+    if (!user || !user.token || user.token !== token) {
       next(HttpError(401));
     }
-
-    try {
-      const user = await User.findById(decode.id).exec();
-
-      if (user.token !== token) {
-        next(HttpError(401));
-      }
-
-      req.user = { id: decode.id, name: decode.name };
-
-      next();
-    } catch (err) {
-      next(HttpError(401));
-    }
-  });
-}
+    req.user = user;
+    next();
+  } catch {
+    next(HttpError(401));
+  }
+};
 
 module.exports = auth;
