@@ -1,6 +1,4 @@
-// const express = require("express");
 const { HttpError } = require("../helpers");
-// const router = express.Router();
 
 const validateBody = (schema) => {
   const func = (req, res, next) => {
