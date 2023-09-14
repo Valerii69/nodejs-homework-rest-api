@@ -3,26 +3,26 @@ const logger = require("morgan");
 const cors = require("cors");
 require("dotenv").config();
 
-const sgMail = require("@sendgrid/mail");
+// const sgMail = require("@sendgrid/mail");
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-const { FROM_EMAIL_BOX, TO_EMAIL_BOX } = process.env;
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+// const { FROM_EMAIL_BOX, TO_EMAIL_BOX } = process.env;
 
-const email = {
-  to: TO_EMAIL_BOX,
-  from: FROM_EMAIL_BOX, // Use the email address or domain you verified above
-  subject: "Test Email Node",
-  text: "Test email with Node.js",
-  html: "<h1 style='color:#ff0000;'><strong>Test email</strong> from localhost:3000</h1>",
-};
-sgMail
-  .send(email)
-  .then(() => {
-    console.log("Email sent");
-  })
-  .catch((error) => {
-    console.error(error);
-  });
+// const email = {
+//   to: TO_EMAIL_BOX,
+//   from: FROM_EMAIL_BOX, // Use the email address or domain you verified above
+//   subject: "Test Email Node",
+//   text: "Test email with Node.js",
+//   html: "<h1 style='color:#ff0000;'><strong>Test email</strong> from localhost:3000</h1>",
+// };
+// sgMail
+//   .send(email)
+//   .then(() => {
+//     console.log("Email sent");
+//   })
+//   .catch((error) => {
+//     console.error(error.message);
+//   });
 
 const contactsRouter = require("./routes/api/contacts");
 const usersRouter = require("./routes/api/users");

@@ -1,14 +1,14 @@
 const bcrypt = require("bcrypt");
 const gravatar = require("gravatar");
-const { User } = require("../../models/user");
-const sendMail = require("../../helpers/sendEmail");
-const crypto = require("uuid");
-// const { HttpError } = require("../../helpers");
-const { DB_HOST } = process.env;
+const User = require("../../models/user");
+const { HttpError } = require("../../helpers");
+const sendEmail = require("../../helpers/");
+const crypto = require("crypto");
+const { BASE_URL } = process.env;
 
 const registerUser = async (req, res, next) => {
   try {
-    const { email, password, subscription } = req.body;
+    const { email, password } = req.body;
     const user = await User.findOne({ email }).exec();
 
     if (user) {
@@ -17,25 +17,29 @@ const registerUser = async (req, res, next) => {
 
     const hashPassword = await bcrypt.hash(password, 10);
     const avatarURL = gravatar.url(email);
-    const verificationToken = crypto();
+    const verificationToken = `${crypto.randomUUID()}`;
+
     const newUser = await User.create({
       ...req.body,
       password: hashPassword,
-      subscription,
+      // subscription,
       avatarURL,
+      verificationToken,
     });
-    const createEmail = (email, verificationToken) => {
+
+    const verifyEmail = (email, verificationToken) => {
       const mail = {
         to: email,
         subject: "Let is verify your email",
-        html: `<a target="_blank" href="${DB_HOST}/users/verify/:${verificationToken}">Verify email</a>`,
+        html: `<a target="_blank" href="${BASE_URL}/users/verify/${verificationToken}">Click Verify email</a>`,
       };
 
       return mail;
     };
 
-    const mail = createEmail(email, verificationToken);
-    await sendMail(mail);
+    // const mail = verifyEmail(email, verificationToken);
+
+    await sendEmail(verifyEmail);
     res.status(201).json({
       user: {
         email: newUser.email,
@@ -45,7 +49,7 @@ const registerUser = async (req, res, next) => {
       },
     });
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error" });
+    throw HttpError(500, "Internal Server Error");
   }
 };
 
