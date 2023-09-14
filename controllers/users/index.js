@@ -5,6 +5,8 @@ const getCurrentUser = require("./getCurrentUser");
 const updateStatusUser = require("./updateStatusUser");
 const ctrlWrapper = require("../../helpers/ctrlWrapper");
 const uploadAvatar = require("./uploadAvatar");
+const verify = require("./verify");
+const resendVerify = require("./resendVerify");
 
 module.exports = {
   registerUser: ctrlWrapper(registerUser),
@@ -13,4 +15,6 @@ module.exports = {
   getCurrentUser: ctrlWrapper(getCurrentUser),
   updateStatusUser: ctrlWrapper(updateStatusUser),
   uploadAvatar: ctrlWrapper(uploadAvatar),
+  verify: ctrlWrapper(verify),
+  resendVerify: ctrlWrapper(resendVerify),
 };

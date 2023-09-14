@@ -3,6 +3,7 @@ const router = express.Router();
 const { validateBody, auth, upload } = require("../../middlewares");
 const ctrl = require("../../controllers/users");
 const { schemas } = require("../../models/user");
+// const verificationToken = crypto.randomUUID();
 
 const jsonParser = express.json();
 
@@ -32,5 +33,11 @@ router.patch(
   ctrl.updateStatusUser
 );
 router.patch("/avatars", auth, upload.single("avatar"), ctrl.uploadAvatar);
+router.get("/verify/:verificationToken", ctrl.verify);
+router.get(
+  "/verify/",
+  validateBody(schemas.verifyEmailSchema),
+  ctrl.resendVerify
+);
 
 module.exports = router;
