@@ -1,17 +1,29 @@
 const express = require("express");
 const router = express.Router();
-const { validateBody, auth, upload } = require("../../middlewares");
+const {
+  validateBody,
+  auth,
+  upload,
+  validateMainBody,
+} = require("../../middlewares");
 const ctrl = require("../../controllers/users");
 const { schemas } = require("../../models/user");
-// const verificationToken = crypto.randomUUID();
 
 const jsonParser = express.json();
 
 router.post(
   "/register",
   jsonParser,
-  validateBody(schemas.registerSchema),
-  ctrl.registerUser
+  validateMainBody(schemas.registerSchema),
+  ctrl.register
+);
+
+router.get("/verify/:verificationToken", ctrl.verifyEmail);
+
+router.post(
+  "/verify",
+  validateMainBody(schemas.emailSchema),
+  ctrl.resendVerifyEmail
 );
 
 router.post(
@@ -33,11 +45,5 @@ router.patch(
   ctrl.updateStatusUser
 );
 router.patch("/avatars", auth, upload.single("avatar"), ctrl.uploadAvatar);
-router.get("/verify/:verificationToken", ctrl.verify);
-router.get(
-  "/verify/",
-  validateBody(schemas.verifyEmailSchema),
-  ctrl.resendVerify
-);
 
 module.exports = router;
