@@ -29,7 +29,7 @@ router.post(
 router.post(
   "/login",
   jsonParser,
-  validateBody(schemas.loginSchema),
+  validateMainBody(schemas.loginSchema),
   ctrl.loginUser
 );
 

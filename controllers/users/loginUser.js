@@ -2,25 +2,25 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = process.env;
 const { User } = require("../../models/user");
-const { HttpError } = require("../../helpers");
+// const { HttpError } = require("../../helpers");
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
     const user = await User.findOne({ email });
+    const passwordCompare = await bcrypt.compare(password, user.password);
 
-    if (!user) {
+    if (!user || !passwordCompare) {
       return res.status(401).json({ message: "Email or password is wrong" });
     }
     if (!user.verify) {
-      throw HttpError(400, "Email not verified");
+      return res.status(401).json({ message: "Email not verified" });
     }
-    const passwordCompare = await bcrypt.compare(password, user.password);
 
-    if (!passwordCompare) {
-      return res.status(401).json({ message: "Email or password is wrong" });
-    }
+    // if (!passwordCompare) {
+    //   return res.status(401).json({ message: "Email or password is wrong" });
+    // }
 
     const payload = { id: user._id };
     const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "23h" });
