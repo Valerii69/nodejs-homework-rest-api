@@ -8,19 +8,22 @@ const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email }).exec();
-
-    if (!user) {
-      return res.status(401).json({ message: "Email or password is wrong" });
-    }
-
+    const user = await User.findOne({ email });
     const passwordCompare = await bcrypt.compare(password, user.password);
-    if (!passwordCompare) {
+
+    if (!user || !passwordCompare) {
       return res.status(401).json({ message: "Email or password is wrong" });
     }
+    if (!user.verify) {
+      return res.status(401).json({ message: "Email not verified" });
+    }
+
+    // if (!passwordCompare) {
+    //   return res.status(401).json({ message: "Email or password is wrong" });
+    // }
 
     const payload = { id: user._id };
-    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "7d" });
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "23h" });
 
     await User.findByIdAndUpdate(user._id, { token });
 

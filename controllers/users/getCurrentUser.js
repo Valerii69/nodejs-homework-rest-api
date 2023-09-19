@@ -2,7 +2,7 @@ const { User } = require("../../models/user");
 
 const getCurrentUser = async (req, res, next) => {
   try {
-    const user = await User.findOne(req.token);
+    const user = await User.findOne(req.token).exec();
     const { email, subscription } = user;
     user.password = undefined;
 
